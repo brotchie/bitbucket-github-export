@@ -1,3 +1,5 @@
+.. image:: https://docs.google.com/drawings/pub?id=1efPWn9IPMn_J4ZMrT2aOhgKq5flgtxpx47l3_aw3DUM&w=456&h=76
+
 Simple command line script to migrate a bitbucket.org Mercurial repository to github.
 
 Requires your public key to be installed on both bitbucket and github.
