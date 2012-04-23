@@ -21,15 +21,15 @@ import argparse
 import operator
 import tempfile
 
-from bitbucket import BitBucket
-from pygithub3 import Github
+import bitbucket
+import pygithub3
 
 def list_bitbucket(args):
     assert len(args.args) == 1
 
     username, = args.args
 
-    bb = BitBucket()
+    bb = bitbucket.BitBucket()
     user = bb.user(username)
     for repo in sorted(user.repositories(), key=operator.itemgetter('name')):
         print('{0} ({1}) - {2}'.format(repo['name'], repo['slug'], repo['description']))
@@ -39,7 +39,7 @@ def list_github(args):
 
     username, = args.args
 
-    gh = Github()
+    gh = pygithub3.Github()
 
     for repo in gh.repos.list(username).all():
         print('{0} - {1}'.format(repo.name, repo.description))
@@ -50,7 +50,7 @@ def port(args):
     bbslug, bbusername, ghrepo, ghusername, ghpassword = args.args
 
     # Fetch repository description.
-    bb = BitBucket()
+    bb = bitbucket.BitBucket()
     bbrepo = bb.repository(bbusername, bbslug)
     bbrepo_info = bbrepo.get()
     description = bbrepo_info.get('description')
@@ -64,7 +64,7 @@ def port(args):
     assert rc == 0
 
     # Create github repository.
-    gh = Github(login=ghusername, password=ghpassword, user=ghusername)
+    gh = bitbucket.Github(login=ghusername, password=ghpassword, user=ghusername)
     ghrepo_info = gh.repos.create(dict(name=ghrepo, description=description))
     ghrepodst = 'git+ssh://' + ghrepo_info.ssh_url.replace(':', '/')
 
